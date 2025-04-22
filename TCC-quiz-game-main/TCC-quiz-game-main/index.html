@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Educacional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Menu Lateral -->
+    <div id="sidebar" class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="#" class="nav-link" data-target="inicio">Início</a></li>
+            <li><a href="#" class="nav-link" data-target="categorias">Categorias</a></li>
+            <li><a href="#" class="nav-link" data-target="dificuldade">Dificuldade</a></li>
+            <li><a href="#" class="nav-link" data-target="ranking">Ranking</a></li>
+            <li><a href="#" class="nav-link" data-target="perfil">Perfil</a></li>
+            <li><a href="#" class="nav-link" data-target="ajuda">Ajuda</a></li>
+        </ul>
+    </div>
+  
+    <div id="menu-overlay" class="menu-overlay"></div>
+
+    <!-- Botão Hamburger para Mobile -->
+    <div id="hamburger" class="hamburger">
+        <i class="fas fa-bars"></i>
+    </div>
+
+    <div class="cosmo-container">
+        <!-- Fundo com estrelas -->
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+
+        <!-- Conteúdo das abas -->
+        <div id="inicio-tab" class="tab-content active">
+            <div class="welcome-screen">
+                <h1 class="title-glow">Quiz Educacional</h1>
+                <p class="subtitle">Prepare-se para o Desafio! Estude e aprenda de forma divertida!</p>
+                
+                <div class="planet-animation">
+                    <div class="planet"></div>
+                    <div class="ring"></div>
+                </div>
+                
+                <div class="player-setup">
+                    <div class="input-group floating">
+                        <input type="text" id="name-input" placeholder=" " required>
+                        <label for="name-input"><i class="fas fa-user-astronaut"></i> Seu Nome</label>
+                        <div class="underline"></div>
+                    </div>
+                    
+                    <div class="difficulty-selection">
+                        <h3><i class="fas fa-chart-line"></i> Dificuldade</h3>
+                        <div class="difficulty-buttons">
+                            <button class="difficulty-btn active" data-difficulty="facil">Fácil</button>
+                            <button class="difficulty-btn" data-difficulty="medio">Médio</button>
+                            <button class="difficulty-btn" data-difficulty="dificil">Difícil</button>
+                        </div>
+                    </div>
+                    
+                    <button id="start-btn" class="start-button pulse">
+                        <i class="fas fa-play"></i> Jogar Agora
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categorias -->
+        <div id="categorias-tab" class="tab-content">
+            <h2>Categorias</h2>
+            <div class="categories-container">
+                <div class="category-card">
+                    <h3>ENEM</h3>
+                    <p>Questões relacionadas ao ENEM.</p>
+                </div>
+                <div class="category-card">
+                    <h3>Cursos</h3>
+                    <p>Questões sobre diferentes cursos.</p>
+                </div>
+                <div class="category-card">
+                    <h3>Universidades</h3>
+                    <p>Questões sobre universidades e suas características.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dificuldade -->
+        <div id="dificuldade-tab" class="tab-content">
+            <h2>Escolha a Dificuldade</h2>
+            <div class="difficulty-options">
+                <button class="difficulty-btn" data-difficulty="facil">Fácil</button>
+                <button class="difficulty-btn" data-difficulty="medio">Médio</button>
+                <button class="difficulty-btn" data-difficulty="dificil">Difícil</button>
+            </div>
+        </div>
+
+        <!-- Ranking -->
+        <div id="ranking-tab" class="tab-content">
+            <h2>Ranking</h2>
+            <p>Veja como você se compara com outros jogadores!</p>
+        </div>
+
+        <!-- Perfil -->
+        <div id="perfil-tab" class="tab-content">
+            <h2>Perfil</h2>
+            <p>Gerencie suas informações e conquistas.</p>
+        </div>
+
+        <!-- Ajuda -->
+        <div id="ajuda-tab" class="tab-content">
+            <h2>Ajuda</h2>
+            <p>Encontre respostas para suas perguntas.</p>
+        </div>
+
+        <!-- Quiz (será mostrado dinamicamente) -->
+        <div id="quiz-tab" class="tab-content">
+            <div class="quiz-container">
+                <div class="player-info">
+                    <span><i class="fas fa-user-astronaut"></i> Jogador: <span class="player-name-text"></span></span>
+                    <span><i class="fas fa-level-up-alt"></i> Nível: <span class="level-number">1</span></span>
+                    <span><i class="fas fa-star"></i> Pontos: <span class="score-number">0</span></span>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress"></div>
+                </div>
+                
+                <div class="question-container">
+                    <div class="question-header">
+                        <span><i class="fas fa-tag"></i> Tema: <span class="theme-text"></span></span>
+                        <span><i class="fas fa-chart-line"></i> Dificuldade: <span class="difficulty-text"></span></span>
+                    </div>
+                    
+                    <div class="question-text-container">
+                        <p id="question-text"></p>
+                    </div>
+                    
+                    <div id="options-container" class="options-container"></div>
+                    
+                    <div id="feedback" class="feedback-container"></div>
+                </div>
+                
+                <div class="quiz-controls">
+                    <button id="next-btn" class="control-btn" disabled>
+                        <i class="fas fa-arrow-right"></i> Próxima
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resultados -->
+        <div id="resultados-tab" class="tab-content">
+            <div class="results-container">
+                <div class="results-header">
+                    <h2>Quiz Concluído!</h2>
+                    <div class="achievement-badge">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <p>Veja como você se saiu:</p>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Pontuação Final</h3>
+                        <div class="stat-value" id="final-score">0</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Acertos</h3>
+                        <div class="stat-value" id="correct-answers">0</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="fas fa-times-circle"></i>
+                        </div>
+                        <h3>Erros</h3>
+                        <div class="stat-value" id="wrong-answers">0</div>
+                    </div>
+                    
+                    <div class="stat-box">
+                        <div class="stat-icon">
+                            <i class="fas fa-level-up-alt"></i>
+                        </div>
+                        <h3>Nível Alcançado</h3>
+                        <div class="stat-value" id="final-level">1</div>
+                    </div>
+                </div>
+                
+                <div class="achievements-container">
+                    <h3><i class="fas fa-trophy"></i> Conquistas Desbloqueadas</h3>
+                    <div id="achievements-grid" class="achievements-grid">
+                        <div class="no-achievements">
+                            <i class="fas fa-award"></i>
+                            <p>Nenhuma conquista desbloqueada ainda</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="wrong-answers-container">
+                    <h3><i class="fas fa-book"></i> Aprendizado</h3>
+                    <p>Revise as questões que você errou:</p>
+                    <div id="wrong-answers-list" class="wrong-answers-list"></div>
+                </div>
+                
+                <button id="restart-btn" class="restart-button">
+                    <i class="fas fa-redo"></i> Jogar Novamente
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal Carregamento -->
+        <div id="loading-modal" class="modal">
+            <div class="modal-content">
+                <div class="spinner"></div>
+                <p>Carregando...</p>
+            </div>
+        </div>
+
+        <!-- Modal da Premiação -->
+        <div id="reward-modal" class="modal">
+            <div class="modal-content">
+                <div class="reward-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h3 id="reward-title">Parabéns!</h3>
+                <p id="reward-message">Você alcançou uma nova conquista!</p>
+                <button class="modal-close">Continuar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
