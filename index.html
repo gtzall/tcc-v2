@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Universitário - Aprenda Jogando</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e2e8f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+            opacity: 0;
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; }
+            50% { opacity: var(--opacity); }
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .typewriter {
+            overflow: hidden;
+            border-right: .15em solid #4f46e5;
+            white-space: nowrap;
+            animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+        }
+        
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+        
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #4f46e5; }
+        }
+    </style>
+</head>
+<body class="relative overflow-x-hidden">
+    <!-- Background Stars -->
+    <div id="stars-container"></div>
+    
+    <!-- Navigation -->
+    <nav class="bg-gray-900 bg-opacity-80 backdrop-blur-md fixed w-full z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <span class="text-indigo-500 text-2xl font-bold"><i class="fas fa-brain mr-2"></i>adoaado</span>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#" class="text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Início</a>
+                            <a href="#" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Jogar</a>
+                            <a href="#" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Matérias</a>
+                            <a href="#" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Ranking</a>
+                            <a href="#" class="text-gray-300 hover:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium">Sobre</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-300">
+                            <i class="fas fa-user-graduate mr-2"></i>Entrar
+                        </button>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="hidden md:hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="text-indigo-400 block px-3 py-2 rounded-md text-base font-medium">Início</a>
+                <a href="#" class="text-gray-300 hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium">Jogar</a>
+                <a href="#" class="text-gray-300 hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium">Matérias</a>
+                <a href="#" class="text-gray-300 hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium">Ranking</a>
+                <a href="#" class="text-gray-300 hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium">Sobre</a>
+                <a href="#" class="text-gray-300 hover:text-indigo-400 block px-3 py-2 rounded-md text-base font-medium">Entrar</a>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                        <span class="typewriter">Domine o ENEM, FATEC e Vestibulares</span>
+                    </h1>
+                    <p class="text-xl text-gray-300 mb-8">
+                        Transforme seus estudos em uma experiência divertida e eficaz com nosso quiz universitário interativo.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition duration-300 shadow-lg pulse">
+                            <i class="fas fa-play mr-2"></i>Começar Agora
+                        </button>
+                        <button class="bg-gray-800 hover:bg-gray-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition duration-300 shadow-lg">
+                            <i class="fas fa-info-circle mr-2"></i>Saiba Mais
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="absolute -top-10 -left-10 w-32 h-32 bg-indigo-500 rounded-full filter blur-3xl opacity-20"></div>
+                        <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-purple-500 rounded-full filter blur-3xl opacity-20"></div>
+                        <img src="https://cdn-icons-png.flaticon.com/512/2864/2864761.png" alt="Quiz Illustration" class="w-full h-auto floating">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gray-900 bg-opacity-50 backdrop-blur-sm">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Por que aprender com nosso quiz?</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    A gamificação transforma o aprendizado em uma experiência envolvente e memorável.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 card-hover border border-gray-700">
+                    <div class="w-16 h-16 bg-indigo-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-bolt text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Aprendizado Acelerado</h3>
+                    <p class="text-gray-300">
+                        Questões no formato ENEM e vestibulares com explicações detalhadas para cada resposta, acelerando seu entendimento dos conceitos.
+                    </p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 card-hover border border-gray-700">
+                    <div class="w-16 h-16 bg-purple-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Acompanhamento de Progresso</h3>
+                    <p class="text-gray-300">
+                        Relatórios detalhados mostram seus pontos fortes e fracos, permitindo focar nos tópicos que mais precisam de atenção.
+                    </p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 card-hover border border-gray-700">
+                    <div class="w-16 h-16 bg-blue-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-gamepad text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Gamificação</h3>
+                    <p class="text-gray-300">
+                        Sistema de conquistas, níveis e competições saudáveis que mantêm você motivado e engajado nos estudos.
+                    </p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 card-hover border border-gray-700">
+                    <div class="w-16 h-16 bg-green-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-brain text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Memorização Eficiente</h3>
+                    <p class="text-gray-300">
+                        Repetição espaçada e testes ativos comprovadamente aumentam a retenção de conhecimento em até 75%.
+                    </p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 card-hover border border-gray-700">
+                    <div class="w-16 h-16 bg-red-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-clock text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Simulados Cronometrados</h3>
+                    <p class="text-gray-300">
+                        Treine sua gestão de tempo com simulados no formato real do ENEM, preparando-se para o dia da prova.
+                    </p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 card-hover border border-gray-700">
+                    <div class="w-16 h-16 bg-yellow-600 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-users text-white text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Comunidade Ativa</h3>
+                    <p class="text-gray-300">
+                        Conecte-se com outros estudantes, compartilhe dicas e participe de desafios em grupo para potencializar seu aprendizado.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Histórias de Sucesso</h2>
+                <p class="text-xl text-gray-300 max-w-3xl mx-auto">
+                    Veja o que nossos usuários estão dizendo sobre como o QuizMaster transformou seus estudos.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 border border-gray-700">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Ana Clara</h4>
+                            <p class="text-gray-400 text-sm">Aprovada em Medicina</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "O QuizMaster foi essencial para minha aprovação! As questões são extremamente parecidas com as do ENEM e os simulados me ajudaram a controlar minha ansiedade na hora da prova."
+                    </p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 border border-gray-700">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/men/44.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Carlos Eduardo</h4>
+                            <p class="text-gray-400 text-sm">Aprovado em Engenharia</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "Nunca imaginei que estudar poderia ser tão divertido. O sistema de ranking me motivou a estudar mais e competir de forma saudável com meus amigos. Minha nota no ENEM subiu 150 pontos!"
+                    </p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-800 bg-opacity-70 rounded-xl p-8 border border-gray-700">
+                    <div class="flex items-center mb-6">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold">Juliana</h4>
+                            <p class="text-gray-400 text-sm">Aprovada em FATEC</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 italic">
+                        "Como trabalho o dia todo, tinha pouco tempo para estudar. O QuizMaster me permitiu estudar de forma eficiente no ônibus e em pequenos intervalos. Fui aprovada na FATEC no primeiro semestre!"
+                    </p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-indigo-900 to-purple-900">
+        <div class="max-w-7xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Pronto para transformar seus estudos?</h2>
+            <p class="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+                Junte-se a milhares de estudantes que estão usando o QuizMaster para conquistar suas aprovações.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <button class="bg-white hover:bg-gray-100 text-indigo-900 px-8 py-4 rounded-lg text-lg font-semibold transition duration-300 shadow-lg">
+                    <i class="fas fa-user-plus mr-2"></i>Criar Conta Grátis
+                </button>
+                <button class="bg-transparent hover:bg-gray-900 text-white border border-white px-8 py-4 rounded-lg text-lg font-semibold transition duration-300">
+                    <i class="fas fa-play-circle mr-2"></i>Experimentar Demo
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-indigo-500 text-2xl font-bold mb-4"><i class="fas fa-brain mr-2"></i>QuizMaster</h3>
+                    <p class="text-gray-400">
+                        Transformando o aprendizado em uma experiência divertida e eficaz para vestibulares e concursos.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Links Rápidos</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-indigo-400 transition">Início</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-indigo-400 transition">Matérias</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-indigo-400 transition">Simulados</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-indigo-400 transition">Ranking</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Suporte</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-indigo-400 transition">Central de Ajuda</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-indigo-400 transition">Termos de Uso</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-indigo-400 transition">Política de Privacidade</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-indigo-400 transition">Contato</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Redes Sociais</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:bg-indigo-600 hover:text-white transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:bg-blue-400 hover:text-white transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:bg-pink-600 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:bg-red-600 hover:text-white transition">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400 mt-4">
+                        Assine nossa newsletter para receber dicas de estudo:
+                    </p>
+                    <div class="mt-2 flex">
+                        <input type="email" placeholder="Seu e-mail" class="bg-gray-800 text-white px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full">
+                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-r-lg">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500">
+                <p>&copy; 2023 QuizMaster. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Create stars
+        function createStars() {
+            const container = document.getElementById('stars-container');
+            const starCount = 100;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                
+                // Random size between 1px and 3px
+                const size = Math.random() * 2 + 1;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation duration and opacity
+                star.style.setProperty('--duration', `${Math.random() * 3 + 2}s`);
+                star.style.setProperty('--opacity', Math.random());
+                
+                container.appendChild(star);
+            }
+        }
+        
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        });
+        
+        // Animate cards on scroll
+        function animateOnScroll() {
+            const cards = document.querySelectorAll('.card-hover');
+            
+            cards.forEach(card => {
+                const cardPosition = card.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (cardPosition < screenPosition) {
+                    card.style.opacity = '1';
+                }
+            });
+        }
+        
+        // Initialize
+        window.addEventListener('load', () => {
+            createStars();
+            animateOnScroll();
+        });
+        
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // Typewriter effect
+        setTimeout(() => {
+            document.querySelector('.typewriter').style.borderRight = 'none';
+        }, 3500);
+    </script>
+</body>
+</html>
